@@ -7,6 +7,11 @@ const speed1 = 7000;
 const speed2 = 8500;
 const speed3 = 11000;
 
+const hellspeed1 = 10000;
+const hellspeed2 = 13500;
+const hellspeed3 = 16027;
+const hellspeed4 = 19563;
+
 const Classical = posed.div({
   enter: { opacity: 0.6, transition: { duration: speed1 } },
   exit: { opacity: 0, transition: { duration: speed1 } }
@@ -20,16 +25,40 @@ const ClassicalChildTwo = posed.div({
   exit: { opacity: 0, transition: { duration: speed3 } }
 });
 
+const Hell = posed.div({
+  enter: { opacity: 0.7, transition: { duration: speed3 } },
+  exit: { opacity: 0, transition: { duration: speed3 } }
+});
+
+const HellChild = posed.div({
+  enter: { opacity: 0.6, transition: { duration: speed3 } },
+  exit: { opacity: 0, transition: { duration: speed3 } }
+});
+
+const HellChildTwo = posed.div({
+  enter: { opacity: 0.5, transition: { duration: speed3 } },
+  exit: { opacity: 0, transition: { duration: speed3 } }
+});
+
+const HellChildThree = posed.div({
+  enter: { opacity: 0.4, transition: { duration: speed3 } },
+  exit: { opacity: 0, transition: { duration: speed3 } }
+});
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      theme: "classical",
+      theme: "hell",
       buttonDisplay: false,
       clickToggle: true,
       isVisible: true,
       isVisible2: true,
-      isVisible3: true
+      isVisible3: true,
+      isVisibleHell: true,
+      isVisibleHell2: true,
+      isVisibleHell3: true,
+      isVisibleHell4: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.displayButton = this.displayButton.bind(this);
@@ -38,9 +67,13 @@ class App extends React.Component {
 
   componentDidMount() {
     this.setState({
-      isVisible: false,
-      isVisible2: false,
-      isVisible3: false
+      isVisible: !this.state.isVisible,
+      isVisible2: !this.state.isVisible2,
+      isVisible3: !this.state.isVisible3,
+      isVisibleHell: !this.state.isVisibleHell,
+      isVisibleHell2: !this.state.isVisibleHell2,
+      isVisibleHell3: !this.state.isVisibleHell3,
+      isVisibleHell4: !this.state.isVisibleHell4
     });
     setInterval(() => {
       this.setState({
@@ -49,14 +82,34 @@ class App extends React.Component {
     }, speed1);
     setInterval(() => {
       this.setState({
-        isVisible2: !this.state.isVisible
+        isVisible2: !this.state.isVisible //note this was a mistake
       });
     }, speed2);
     setInterval(() => {
       this.setState({
-        isVisible3: !this.state.isVisible
+        isVisible3: !this.state.isVisible //this too was a mistake
       });
     }, speed3);
+    setInterval(() => {
+      this.setState({
+        isVisibleHell: !this.state.isVisibleHell
+      });
+    }, hellspeed1);
+    setInterval(() => {
+      this.setState({
+        isVisibleHell2: !this.state.isVisibleHell2
+      });
+    }, hellspeed2);
+    setInterval(() => {
+      this.setState({
+        isVisibleHell3: !this.state.isVisibleHell3
+      });
+    }, hellspeed3);
+    setInterval(() => {
+      this.setState({
+        isVisibleHell4: !this.state.isVisibleHell4
+      });
+    }, hellspeed4);
   }
 
   handleChange(e) {
@@ -137,13 +190,41 @@ class App extends React.Component {
       //for this one, start with some of the booleans flipped; do it in the ternary!
       paintings = (
         <div
-          className="hell w-3/5 mx-auto my-auto relative"
+          className="container w-3/5 mx-auto my-auto relative"
           onClick={this.hideButton}
           onMouseEnter={this.displayButton}
         >
-          <div className="hellChild w-full absolute"></div>
-          <div className="hellChildTwo w-full absolute"></div>
-          <div className="hellChildThree w-full absolute"></div>
+          <PoseGroup>
+            {this.state.isVisibleHell ? (
+              <Hell className="hell w-full absolute" key="hell" />
+            ) : (
+              ""
+            )}
+            {this.state.isVisibleHell2 ? (
+              <HellChild
+                className="hellChild w-full absolute"
+                key="hellChild"
+              />
+            ) : (
+              ""
+            )}
+            {this.state.isVisibleHell3 ? (
+              <HellChildTwo
+                className="hellChildTwo w-full absolute"
+                key="hellChildTwo"
+              />
+            ) : (
+              ""
+            )}
+            {this.state.isVisibleHell4 ? (
+              <HellChildThree
+                className="hellChildThree w-full absolute"
+                key="hellChildThree"
+              />
+            ) : (
+              ""
+            )}
+          </PoseGroup>
         </div>
       );
     }

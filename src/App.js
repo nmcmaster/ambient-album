@@ -124,7 +124,7 @@ class App extends React.Component {
   }
   buttonToggleClick(e) {
     this.setState({ buttonDisplay: !this.state.buttonDisplay });
-    setInterval(() => {
+    setTimeout(() => {
       if (this.state.buttonDisplay) {
         this.setState({ buttonDisplay: false });
       }

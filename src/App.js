@@ -109,11 +109,6 @@ class App extends React.Component {
         isVisibleHell4: !this.state.isVisibleHell4
       });
     }, hellspeed4);
-    setInterval(() => {
-      if (this.state.buttonDisplay) {
-        this.setState({ buttonDisplay: false });
-      }
-    }, 30000);
   }
 
   changeTheme(e) {
@@ -129,6 +124,11 @@ class App extends React.Component {
   }
   buttonToggleClick(e) {
     this.setState({ buttonDisplay: !this.state.buttonDisplay });
+    setInterval(() => {
+      if (this.state.buttonDisplay) {
+        this.setState({ buttonDisplay: false });
+      }
+    }, 10000);
   }
 
   render() {

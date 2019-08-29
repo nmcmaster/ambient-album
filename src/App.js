@@ -26,23 +26,23 @@ const ClassicalChildTwo = posed.div({
 });
 
 const Hell = posed.div({
-  enter: { opacity: 0.7, transition: { duration: speed3 } },
-  exit: { opacity: 0, transition: { duration: speed3 } }
+  enter: { opacity: 0.7, transition: { duration: hellspeed1 } },
+  exit: { opacity: 0, transition: { duration: hellspeed1 } }
 });
 
 const HellChild = posed.div({
-  enter: { opacity: 0.6, transition: { duration: speed3 } },
-  exit: { opacity: 0, transition: { duration: speed3 } }
+  enter: { opacity: 0.6, transition: { duration: hellspeed2 } },
+  exit: { opacity: 0, transition: { duration: hellspeed2 } }
 });
 
 const HellChildTwo = posed.div({
-  enter: { opacity: 0.5, transition: { duration: speed3 } },
-  exit: { opacity: 0, transition: { duration: speed3 } }
+  enter: { opacity: 0.5, transition: { duration: hellspeed3 } },
+  exit: { opacity: 0, transition: { duration: hellspeed3 } }
 });
 
 const HellChildThree = posed.div({
-  enter: { opacity: 0.4, transition: { duration: speed3 } },
-  exit: { opacity: 0, transition: { duration: speed3 } }
+  enter: { opacity: 0.4, transition: { duration: hellspeed4 } },
+  exit: { opacity: 0, transition: { duration: hellspeed4 } }
 });
 
 class App extends React.Component {
@@ -51,18 +51,17 @@ class App extends React.Component {
     this.state = {
       theme: "hell",
       buttonDisplay: false,
-      clickToggle: true,
       isVisible: true,
-      isVisible2: true,
+      isVisible2: false,
       isVisible3: true,
       isVisibleHell: true,
       isVisibleHell2: true,
       isVisibleHell3: true,
       isVisibleHell4: true
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.changeTheme = this.changeTheme.bind(this);
     this.displayButton = this.displayButton.bind(this);
-    this.hideButton = this.hideButton.bind(this);
+    this.buttonToggleClick = this.buttonToggleClick.bind(this);
   }
 
   componentDidMount() {
@@ -82,12 +81,12 @@ class App extends React.Component {
     }, speed1);
     setInterval(() => {
       this.setState({
-        isVisible2: !this.state.isVisible //note this was a mistake
+        isVisible2: !this.state.isVisible //note that this was a mistake, but was cool artistically
       });
     }, speed2);
     setInterval(() => {
       this.setState({
-        isVisible3: !this.state.isVisible //this too was a mistake
+        isVisible3: !this.state.isVisible //also artsy mistake
       });
     }, speed3);
     setInterval(() => {
@@ -110,9 +109,15 @@ class App extends React.Component {
         isVisibleHell4: !this.state.isVisibleHell4
       });
     }, hellspeed4);
+    setInterval(() => {
+      if (this.state.buttonDisplay) {
+        this.setState({ buttonDisplay: false });
+      }
+    }, 30000);
   }
 
-  handleChange(e) {
+  changeTheme(e) {
+    e.stopPropagation();
     if (this.state.theme === "classical") {
       this.setState({ theme: "hell" });
     } else if (this.state.theme === "hell") {
@@ -122,18 +127,8 @@ class App extends React.Component {
   displayButton(e) {
     this.setState({ buttonDisplay: true });
   }
-  hideButton(e) {
-    if (this.state.clickToggle) {
-      this.setState({
-        buttonDisplay: false,
-        clickToggle: false
-      });
-    } else {
-      this.setState({
-        buttonDisplay: true,
-        clickToggle: true
-      });
-    }
+  buttonToggleClick(e) {
+    this.setState({ buttonDisplay: !this.state.buttonDisplay });
   }
 
   render() {
@@ -142,7 +137,7 @@ class App extends React.Component {
       button = (
         <button
           className="fixed bottom-0 right-0 mr-32 mb-24 p-1 px-3 shadow rounded-full bg-gray-500 font-serif text-xs text-gray-600 text-shadow"
-          onClick={this.handleChange}
+          onClick={this.changeTheme}
         >
           switch
         </button>
@@ -155,7 +150,6 @@ class App extends React.Component {
       paintings = (
         <div
           className="container w-3/5 mx-auto my-auto relative"
-          onClick={this.hideButton}
           onMouseEnter={this.displayButton}
         >
           <PoseGroup>
@@ -187,11 +181,9 @@ class App extends React.Component {
         </div>
       );
     } else if (this.state.theme === "hell") {
-      //for this one, start with some of the booleans flipped; do it in the ternary!
       paintings = (
         <div
           className="container w-3/5 mx-auto my-auto relative"
-          onClick={this.hideButton}
           onMouseEnter={this.displayButton}
         >
           <PoseGroup>
@@ -229,10 +221,18 @@ class App extends React.Component {
       );
     }
     return (
-      <div className="App flex justify-center h-screen bg-black">
+      <div
+        className="App flex justify-center h-screen bg-black"
+        onClick={this.buttonToggleClick}
+      >
         {paintings}
         {button}
-        <audio className="fixed top-0 right-0" autoPlay src={aaa}></audio>
+        <audio
+          className="fixed top-0 right-0"
+          controls
+          autoPlay
+          src={aaa}
+        ></audio>
       </div>
     );
   }
